@@ -13,12 +13,11 @@
 import { useOktaAuth } from '@okta/okta-react';
 import React from 'react';
 import { useHistory, Link } from 'react-router-dom';
-import { Container, Icon, Image, Menu } from 'semantic-ui-react';
+import { Container, Icon, Image, Menu, Input } from 'semantic-ui-react';
 
 const Navbar = ({ setCorsErrorModalOpen }) => {
   const history = useHistory();
   const { authState, oktaAuth } = useOktaAuth();
-
   const login = async () => history.push('/login');
 
   // Note: Can't distinguish CORS error from other network errors
@@ -38,13 +37,27 @@ const Navbar = ({ setCorsErrorModalOpen }) => {
 
   return (
     <div>
-      <Menu fixed="top" inverted>
+      <Menu secondary inverted style={{ backgroundColor: '#dc1431', height: '80px', fontSize: '15px' }}>
         <Container>
           <Menu.Item header>
-            <Image size="mini" src="/react.svg" />
+            <Image size="mini" src="/bank.png" />
             &nbsp;
-            <Link to="/">Okta-React Sample Project</Link>
+            <Link to="/">&nbsp;Bank of America</Link>
           </Menu.Item>
+          <Menu.Item>
+            Online Banking
+          </Menu.Item>
+          <Menu.Menu position="right">
+            <Menu.Item>
+              Profile &amp; Settings
+            </Menu.Item>
+            <Menu.Item>
+              Saved Items
+            </Menu.Item>
+            <Menu.Item>
+              <Input className="icon" icon="search" placeholder="How Can We Help You?" />
+            </Menu.Item>
+          </Menu.Menu>
           {authState.isAuthenticated && (
           <Menu.Item id="messages-button">
             <Icon name="mail outline" />
@@ -59,6 +72,31 @@ const Navbar = ({ setCorsErrorModalOpen }) => {
           {authState.isAuthenticated && <Menu.Item id="logout-button" onClick={logout}>Logout</Menu.Item>}
           {!authState.isPending && !authState.isAuthenticated && <Menu.Item onClick={login}>Login</Menu.Item>}
         </Container>
+      </Menu>
+      <Menu attached="top" style={{ backgroundColor: '#e5e2da', marginTop: '-20px' }}>
+        <Menu.Item>
+          Accounts
+        </Menu.Item>
+        <Menu.Item>
+          Bill Pay
+        </Menu.Item>
+        <Menu.Item>
+          Transfer | Zelle
+        </Menu.Item>
+        <Menu.Item>
+          Rewards &amp; Deals
+        </Menu.Item>
+        <Menu.Item>
+          Tools &amp; Investing
+        </Menu.Item>
+        <Menu.Menu position="right">
+          <Menu.Item>
+            Open an Account
+          </Menu.Item>
+          <Menu.Item>
+            Help &amp; Support
+          </Menu.Item>
+        </Menu.Menu>
       </Menu>
     </div>
   );

@@ -12,22 +12,21 @@
 
 import { useOktaAuth } from '@okta/okta-react';
 import React, { useState, useEffect } from 'react';
-// import { useHistory } from 'react-router-dom';
-import { Button, Header, Form, List, Message, Transition } from 'semantic-ui-react';
+import { useHistory } from 'react-router-dom';
+import { Button, Header, Form, List } from 'semantic-ui-react';
 
-const Home = () => {
-  // const history = useHistory();
+const Admin = () => {
+  const history = useHistory();
   const { authState, oktaAuth } = useOktaAuth();
   const [userInfo, setUserInfo] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [loanDocs, setLoanDocs] = useState();
   const [downloadUrl, setDownloadUrl] = useState(null);
   const [targetName, setTargetName] = useState(null);
-  const [uploadSuccess, setUploadSuccess] = useState(false);
   // const [apiResponse, setApiResponse] = useState(null);
   // const [isFilePicked, setIsFilePicked] = useState(false);
 
-  const token = 'Bearer uorLC4AFvJE889IzQyZR1Z4fua8ynbI1';
+  const token = 'Bearer nZFvaMl9IQlhKg3ZWoHV7NdgW2TpFOHM';
   const changeHandler = (event) => {
     setSelectedFile(event.target.files[0]);
     console.log('Check selected file: ', event.target.files[0]);
@@ -60,10 +59,6 @@ const Home = () => {
     });
     const resp = await response.text();
     console.log('resp: ', resp);
-    if (resp) {
-      setUploadSuccess(true);
-      setTimeout(() => { setUploadSuccess(false); }, 2000);
-    }
   };
 
   const getFolderItems = async () => {
@@ -130,9 +125,9 @@ const Home = () => {
     }
   }, [authState, oktaAuth]); // Update if authState changes
 
-  // const login = async () => {
-  //   history.push('/login');
-  // };
+  const login = async () => {
+    history.push('/login');
+  };
 
   const resourceServerExamples = [
     {
@@ -158,7 +153,7 @@ const Home = () => {
   return (
     <div>
       <div>
-        <Header as="h1">Welcome to Your Loan Application!</Header>
+        <Header as="h1">Welcome to the Remote Application!</Header>
 
         { authState.isAuthenticated && !userInfo
         && <div>Loading user information...</div>}
@@ -199,11 +194,18 @@ const Home = () => {
         && (
         <div>
           <p>You can use the buttons below to upload new documents as well as view &amp; download documents you&apos;ve previously submitted:</p>
-          {/* <p>
+          <p>
+            <span>This example shows you how to use the </span>
+            <a href="https://github.com/okta/okta-react/tree/master">Okta React Library</a>
+            <span> to add the </span>
+            <a href="https://developer.okta.com/docs/guides/implement-auth-code-pkce">PKCE Flow</a>
+            <span> to your application.</span>
+          </p>
+          <p>
             When you click the login button below, you will be presented the login page on the Okta Sign-In Widget hosted within the application.
             After you authenticate, you will be logged in to this application with an ID token and access token. These tokens will be stored in local storage and can be retrieved at a later time.
-          </p> */}
-          {/* <Button id="login-button" primary onClick={login}>Login</Button> */}
+          </p>
+          <Button id="login-button" primary onClick={login}>Login</Button>
           <div style={{ marginTop: '25px' }}>
             <Form.Field encType="multipart/form-data">
               {/* eslint-disable-next-line */}
@@ -211,11 +213,8 @@ const Home = () => {
               <input type="file" id="upload" name="upload" onChange={changeHandler} style={{ marginLeft: '25px' }} />
               <Button type="submit" onClick={handleUpload} primary>Upload Docs</Button>
             </Form.Field>
-            <Transition visible={uploadSuccess} animation="scale" duration={1000}>
-              <Message success header="Successfully uploaded to Box!" />
-            </Transition>
           </div>
-          <div style={{ marginTop: '40px' }}>
+          <div style={{ marginTop: '25px' }}>
             <Button onClick={getFolderItems}>See Uploaded Files</Button>
           </div>
           {loanDocs
@@ -223,16 +222,6 @@ const Home = () => {
           <div style={{ marginTop: '25px' }}>
             <List bulleted link>
               {listItems}
-              {/* {loanDocs.forEach((item) => {
-                console.log('item: ', item);
-                const { name } = item;
-                console.log('name: ', name);
-                return (
-                  <List.Item>
-                    {name}
-                  </List.Item>
-                );
-              })} */}
             </List>
           </div>
           )}
@@ -251,4 +240,4 @@ const Home = () => {
     </div>
   );
 };
-export default Home;
+export default Admin;

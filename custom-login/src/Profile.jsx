@@ -14,17 +14,43 @@ import React, { useState, useEffect } from 'react';
 import { useOktaAuth } from '@okta/okta-react';
 import { Header, Icon, Table } from 'semantic-ui-react';
 
+// const BoxSDK = require('box-node-sdk');
+
 const Profile = () => {
   const { authState, oktaAuth } = useOktaAuth();
   const [userInfo, setUserInfo] = useState(null);
+  const [accessToken, setAccessToken] = useState('');
+  // const sdk = new BoxSDK({
+  //   clientID: '4xaegsr5mg392v5bkbib1pb12exw3eyj',
+  //   clientSecret: 'tYI2U0xvyNUiABAdkZOTAZlO1UEwELNq',
+  // });
+  // Have to replace every 60 mins
+  // const client = sdk.getBasicClient('EhZ0snVjvlKjrWY7HLFqrqb1cNFneHx9');
+  // const getBoxInfo = () => {
+  //   fetch(client.users.get(client.CURRENT_USER_ID))
+  //     .then((user) => console.log('Hello', user.name, '!'))
+  //     .catch((err) => console.log('Got an error!', err));
+  // };
 
   useEffect(() => {
     if (!authState.isAuthenticated) {
       // When user isn't authenticated, forget any user info
       setUserInfo(null);
     } else {
+      const token = oktaAuth.getAccessToken();
+      // eslint-disable-next-line
+      console.log('Access Token returned from oktaAuth: ', token);
+      setAccessToken(token);
+      // eslint-disable-next-line
+      console.log('Access Token saved in state: ', accessToken);
       oktaAuth.getUser().then((info) => {
         setUserInfo(info);
+        // getBoxInfo();
+        // if (userInfo.sub) {
+        //   box.validateUser(userInfo, res);
+        // } else {
+        //   console.log("No Okta ID")
+        // }
       });
     }
   }, [authState, oktaAuth]); // Update if authState changes
